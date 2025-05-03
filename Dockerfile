@@ -13,12 +13,13 @@ RUN git clone https://github.com/aknecht26/pytorch_geometric /repo
 # Set working directory
 WORKDIR /repo
 
+# Install required dependencies from pyproject.toml first
+RUN pip install --no-cache-dir numpy
+RUN pip install --no-cache-dir aiohttp fsspec jinja2 psutil>=5.8.0 pyparsing requests tqdm xxhash
+
 # Install PyTorch and PyG dependencies
 RUN pip install --no-cache-dir torch
-RUN pip install --no-cache-dir pyg_lib torch_scatter torch_sparse torch_cluster torch_spline_conv -f https://data.pyg.org/whl/torch-$(python -c "import torch; print(torch.__version__.split('+')[0])")+cpu.html
-
-# Install required dependencies from pyproject.toml
-RUN pip install --no-cache-dir aiohttp fsspec jinja2 numpy psutil>=5.8.0 pyparsing requests tqdm xxhash
+RUN pip install --no-cache-dir pyg_lib torch_scatter torch_sparse torch_cluster torch_spline_conv -f https://data.pyg.org/whl/torch-$(python -c "import torch; print(torch.__version__.split('+')[0])")+cpu.html || echo "PyG extensions not available for this PyTorch version, continuing without them"
 
 # Install the package in editable mode
 RUN pip install -e .
