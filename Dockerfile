@@ -19,7 +19,7 @@ RUN pip install --no-cache-dir aiohttp fsspec jinja2 psutil>=5.8.0 pyparsing req
 
 # Install PyTorch and PyG dependencies
 RUN pip install --no-cache-dir torch
-RUN pip install --no-cache-dir pyg_lib torch_scatter torch_sparse torch_cluster torch_spline_conv -f https://data.pyg.org/whl/torch-$(python -c "import torch; print(torch.__version__.split('+')[0])")+cpu.html || echo "PyG extensions not available for this PyTorch version, continuing without them"
+RUN pip install --no-cache-dir pyg_lib torch_scatter torch_sparse torch_cluster torch_spline_conv -f https://data.pyg.org/whl/torch-2.1.0+cpu.html || echo "PyG extensions not available for this PyTorch version, continuing without them"
 
 # Install the package in editable mode
 RUN pip install -e .
